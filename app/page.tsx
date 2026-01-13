@@ -14,13 +14,22 @@ async function getProducts() {
       .filter((product) => product.default_price) // Only include products with a price
       .map((product) => {
         const price = product.default_price as Stripe.Price;
+        const imageUrl = product.images && product.images.length > 0 ? product.images[0] : null;
+        
+        // Debug logging
+        if (imageUrl) {
+          console.log(`Product ${product.name} has image: ${imageUrl}`);
+        } else {
+          console.log(`Product ${product.name} has no images. Total images: ${product.images?.length || 0}`);
+        }
+        
         return {
           id: product.id,
           title: product.name,
           price: price.unit_amount ? price.unit_amount / 100 : 0,
           stripePriceId: price.id,
           stripeProductId: product.id,
-          image: product.images && product.images.length > 0 ? product.images[0] : '/product-placeholder.jpg',
+          image: imageUrl || '/product-placeholder.jpg',
           demoUrl: product.metadata?.demoUrl,
         };
       });

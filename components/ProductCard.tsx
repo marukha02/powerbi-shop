@@ -56,12 +56,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         className="glass rounded-xl overflow-hidden hover:bg-white/10 transition-all duration-300"
       >
         <div className="aspect-video bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center overflow-hidden relative">
-          {product.image && product.image.startsWith('http') ? (
+          {product.image && (product.image.startsWith('http') || product.image.startsWith('https')) ? (
             <Image 
               src={product.image} 
               alt={product.title}
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               unoptimized
             />
           ) : (
